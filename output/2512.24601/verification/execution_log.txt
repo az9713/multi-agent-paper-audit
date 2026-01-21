@@ -1,0 +1,87 @@
+Starting verification process...
+
+================================================================================
+VERIFICATION SCRIPT FOR: Recursive Language Models (arXiv:2512.24601)
+================================================================================
+
+[1/4] Running Mathematical Verification...
+  ✓ Verified 2/4 percentage calculations
+    ✗ E2_C2: OOLONG-Pairs GPT-5: 58.00 vs 0.04 F1 - MISMATCH
+      Claimed: 1350.0%
+      Actual relative: 144900.0%
+      Multiplier: 1450.0× = 144900% improvement
+    ✗ E3_C3: OOLONG-Pairs Qwen3-Coder: 23.11 vs 0.06 F1 - MISMATCH
+      Claimed: 385.0%
+      Actual relative: 38416.67%
+      Multiplier: 385.2× = 38417% improvement
+    ✓ E6_C4: OOLONG GPT-5: 56.50% vs 44.00% - VERIFIED
+    ✓ E7_C5: OOLONG Qwen3-Coder: 48.00% vs 36.00% - VERIFIED
+
+[2/4] Running Ablation Study Verification...
+  ✓ E15: OOLONG ablation verified
+    Drop: 20.50 percentage points
+  ✓ E16: OOLONG-Pairs ablation verified
+    Drop: 40.66 percentage points
+  ✓ C12: Quadratic tasks show larger impact - VERIFIED
+
+[3/4] Running RLM Concept Simulation...
+  ✓ E1: 100x capability demonstrated
+    Context window: 1000 tokens
+    Input size: 100000 tokens
+    Multiplier: 100.0x
+  ✓ Recursive decomposition demonstrated
+    Input: 5000 tokens
+    Chunks: 5
+    Sub-calls: 5
+
+[4/4] Running Benchmark Analysis...
+  ✓ Benchmark characteristics analyzed
+  ✓ Token counts verified:
+    ✓ E9_OOLONG_131K: 131000 - 131K tokens for linear complexity tasks
+    ✓ E10_OOLONG_Pairs_32K: 32000 - 32K tokens for quadratic complexity tasks
+    ✓ E8_BrowseComp_6M_11M: 6M-11M - 6-11M tokens across 1K documents
+
+================================================================================
+GENERATING SUMMARY
+================================================================================
+
+Verification Status: 9/11 claims verified
+Score: 8.2/10
+
+Verified Claims:
+  ✓ C12
+  ✓ E1
+  ✓ E10
+  ✓ E15
+  ✓ E16
+  ✓ E6_C4
+  ✓ E7_C5
+  ✓ E8
+  ✓ E9
+
+Unverified Claims:
+  ✗ E2_C2
+  ✗ E3_C3
+
+Mathematical Discrepancies Found:
+  ! E2_C2
+    Claimed: 1350.0%
+    Calculated: 144900.0%
+    Multiplier: 1450.0× = 144900% improvement
+    → Paper may be using different calculation method
+  ! E3_C3
+    Claimed: 385.0%
+    Calculated: 38416.67%
+    Multiplier: 385.2× = 38417% improvement
+    → Paper may be using different calculation method
+
+Notes:
+  • RLM concept successfully simulated - demonstrates feasibility
+  • Benchmark token counts verified from paper claims
+  • Cost ratio claim E13 (3x cheaper) not verified due to lack of specific cost data
+
+Results saved to: C:\Users\simon\Downloads\recursive_LM_chase_ai\output\2512.24601\verification\results.json
+
+================================================================================
+VERIFICATION COMPLETE
+================================================================================

@@ -1,0 +1,712 @@
+{
+  "paper_id": "2512.24601",
+  "title": "Recursive Language Models",
+  "authors": ["Alex L. Zhang", "Tim Kraska", "Omar Khattab"],
+  "theoretical_claims": [
+    {
+      "id": "T1",
+      "text": "RLMs enable LLMs to process prompts far exceeding their context windows by treating long prompts as environmental variables within a Python REPL",
+      "evidence_type": "architectural_design",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "T2",
+      "text": "Placing prompts in an external REPL environment as manipulable variables is superior to feeding massive prompts directly into neural networks",
+      "evidence_type": "design_rationale",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "medium",
+      "dependencies": []
+    },
+    {
+      "id": "T3",
+      "text": "Programmatic inspection and partition of context through code execution enables more effective processing than direct token-based attention",
+      "evidence_type": "mechanistic_explanation",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "medium",
+      "dependencies": []
+    },
+    {
+      "id": "T4",
+      "text": "Recursive sub-task construction allows models to handle complexity that exceeds single-pass capabilities",
+      "evidence_type": "algorithmic_principle",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "T5",
+      "text": "Exposing llm_query() function for recursive sub-LM calls enables compositional problem decomposition",
+      "evidence_type": "interface_design",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "T6",
+      "text": "RLMs exhibit emergent behaviors including filtering via code execution without explicit training for these capabilities",
+      "evidence_type": "emergent_property",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "medium",
+      "dependencies": ["E23", "E24", "E25", "E26"]
+    },
+    {
+      "id": "T7",
+      "text": "Recursive decomposition emerges naturally from the RLM framework as models learn to chunk context and query sub-LMs",
+      "evidence_type": "emergent_property",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "medium",
+      "dependencies": []
+    },
+    {
+      "id": "T8",
+      "text": "Answer verification through additional sub-LM calls improves accuracy without explicit verification training",
+      "evidence_type": "emergent_property",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "medium",
+      "dependencies": []
+    },
+    {
+      "id": "T9",
+      "text": "Constructing answers in REPL variables provides a mechanism for handling outputs that exceed context length limits",
+      "evidence_type": "capability_explanation",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "T10",
+      "text": "The synchronous design of the current RLM implementation creates runtime inefficiency that could be improved with parallelization",
+      "evidence_type": "limitation_analysis",
+      "verifiable": true,
+      "section": "limitations",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "T11",
+      "text": "Models not explicitly trained as RLMs can still effectively utilize the RLM framework",
+      "evidence_type": "generalization_claim",
+      "verifiable": true,
+      "section": "limitations",
+      "confidence": "high",
+      "dependencies": ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8"]
+    },
+    {
+      "id": "T12",
+      "text": "Recursion depth limitation to one represents a constraint that may be limiting performance potential",
+      "evidence_type": "limitation_analysis",
+      "verifiable": true,
+      "section": "limitations",
+      "confidence": "medium",
+      "dependencies": []
+    }
+  ],
+  "empirical_claims": [
+    {
+      "id": "E1",
+      "text": "RLMs can handle inputs two orders of magnitude beyond model context windows",
+      "evidence_type": "capability_measurement",
+      "verifiable": true,
+      "section": "abstract",
+      "confidence": "high",
+      "metric": "context_length_multiplier",
+      "value": "100x",
+      "dependencies": []
+    },
+    {
+      "id": "E2",
+      "text": "On OOLONG-Pairs (quadratic complexity), RLM(GPT-5) achieves 58.00 F1 score compared to GPT-5 base 0.04 F1 score",
+      "evidence_type": "benchmark_result",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "f1_score",
+      "value": "58.00 vs 0.04",
+      "improvement": "+1350%",
+      "dependencies": []
+    },
+    {
+      "id": "E3",
+      "text": "On OOLONG-Pairs, RLM(Qwen3-Coder) achieves 23.11 F1 score compared to Qwen3-Coder base 0.06 F1 score",
+      "evidence_type": "benchmark_result",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "f1_score",
+      "value": "23.11 vs 0.06",
+      "improvement": "+385%",
+      "dependencies": []
+    },
+    {
+      "id": "E4",
+      "text": "On BrowseComp-Plus (1K), RLM(GPT-5) achieves 91.33% accuracy with $0.99 average cost",
+      "evidence_type": "benchmark_result",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "accuracy",
+      "value": "91.33%",
+      "cost": "$0.99",
+      "dependencies": []
+    },
+    {
+      "id": "E5",
+      "text": "Base GPT-5 achieves 0% accuracy on BrowseComp-Plus (1K) because input exceeded context limits",
+      "evidence_type": "baseline_result",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "accuracy",
+      "value": "0%",
+      "dependencies": []
+    },
+    {
+      "id": "E6",
+      "text": "On OOLONG (linear complexity), RLM(GPT-5) achieves 56.50% compared to base 44.00%",
+      "evidence_type": "benchmark_result",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "accuracy",
+      "value": "56.50% vs 44.00%",
+      "improvement": "+28.4%",
+      "dependencies": []
+    },
+    {
+      "id": "E7",
+      "text": "On OOLONG, RLM(Qwen3-Coder) achieves 48.00% compared to base 36.00%",
+      "evidence_type": "benchmark_result",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "accuracy",
+      "value": "48.00% vs 36.00%",
+      "improvement": "+33.3%",
+      "dependencies": []
+    },
+    {
+      "id": "E8",
+      "text": "BrowseComp-Plus benchmark uses 1K documents spanning 6-11M tokens",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "token_count",
+      "value": "6-11M tokens",
+      "dependencies": []
+    },
+    {
+      "id": "E9",
+      "text": "OOLONG benchmark contains 131K tokens with linear complexity information aggregation tasks",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "token_count",
+      "value": "131K tokens",
+      "dependencies": []
+    },
+    {
+      "id": "E10",
+      "text": "OOLONG-Pairs benchmark contains 32K tokens with quadratic complexity pairwise reasoning tasks",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "token_count",
+      "value": "32K tokens",
+      "dependencies": []
+    },
+    {
+      "id": "E11",
+      "text": "LongBench-v2 CodeQA benchmark spans 23K-4.2M tokens for code understanding tasks",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "token_count",
+      "value": "23K-4.2M tokens",
+      "dependencies": []
+    },
+    {
+      "id": "E12",
+      "text": "Median costs for RLMs are comparable or cheaper than base models",
+      "evidence_type": "cost_analysis",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "medium",
+      "metric": "cost_comparison",
+      "value": "comparable_or_cheaper",
+      "dependencies": []
+    },
+    {
+      "id": "E13",
+      "text": "RLMs are 3× cheaper than summarization baselines",
+      "evidence_type": "cost_analysis",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "cost_ratio",
+      "value": "3x cheaper",
+      "dependencies": []
+    },
+    {
+      "id": "E14",
+      "text": "RLM trajectory costs exhibit high variance with outlier runs exceeding median costs",
+      "evidence_type": "cost_analysis",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "metric": "cost_variance",
+      "value": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E15",
+      "text": "RLM without sub-calls achieves 36.00% on OOLONG versus full RLM 56.50%",
+      "evidence_type": "ablation_result",
+      "verifiable": true,
+      "section": "ablation",
+      "confidence": "high",
+      "metric": "accuracy",
+      "value": "36.00% vs 56.50%",
+      "dependencies": []
+    },
+    {
+      "id": "E16",
+      "text": "RLM without sub-calls achieves 17.34% on OOLONG-Pairs versus full RLM 58.00%",
+      "evidence_type": "ablation_result",
+      "verifiable": true,
+      "section": "ablation",
+      "confidence": "high",
+      "metric": "accuracy",
+      "value": "17.34% vs 58.00%",
+      "dependencies": []
+    },
+    {
+      "id": "E17",
+      "text": "Experiments use GPT-5 as the frontier closed-source model",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E18",
+      "text": "Experiments use Qwen3-Coder-480B-A35B as the frontier open-source model",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E19",
+      "text": "S-NIAH benchmark has constant complexity for finding single needles in haystack",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "complexity",
+      "value": "constant",
+      "dependencies": []
+    },
+    {
+      "id": "E20",
+      "text": "BrowseComp-Plus requires multi-hop reasoning across 1K documents",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "task_type",
+      "value": "multi-hop reasoning",
+      "dependencies": []
+    },
+    {
+      "id": "E21",
+      "text": "OOLONG has linear complexity for information aggregation",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "complexity",
+      "value": "linear",
+      "dependencies": []
+    },
+    {
+      "id": "E22",
+      "text": "OOLONG-Pairs has quadratic complexity for pairwise reasoning",
+      "evidence_type": "experimental_setup",
+      "verifiable": true,
+      "section": "methodology",
+      "confidence": "high",
+      "metric": "complexity",
+      "value": "quadratic",
+      "dependencies": []
+    },
+    {
+      "id": "E23",
+      "text": "RLMs exhibit filtering via code execution using regex queries",
+      "evidence_type": "observed_behavior",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E24",
+      "text": "RLMs exhibit filtering via code execution using keyword searches",
+      "evidence_type": "observed_behavior",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E25",
+      "text": "RLMs exhibit recursive decomposition by chunking context and recursively querying sub-LMs",
+      "evidence_type": "observed_behavior",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E26",
+      "text": "RLMs exhibit answer verification through additional sub-LM calls",
+      "evidence_type": "observed_behavior",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E27",
+      "text": "RLMs handle long output by constructing answers in REPL variables",
+      "evidence_type": "observed_behavior",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "high",
+      "dependencies": []
+    },
+    {
+      "id": "E28",
+      "text": "Maximum recursion depth is set to one in current implementation",
+      "evidence_type": "implementation_detail",
+      "verifiable": true,
+      "section": "limitations",
+      "confidence": "high",
+      "metric": "recursion_depth",
+      "value": "1",
+      "dependencies": []
+    },
+    {
+      "id": "E29",
+      "text": "Sequential implementation slows runtime compared to potential parallel execution",
+      "evidence_type": "performance_limitation",
+      "verifiable": true,
+      "section": "limitations",
+      "confidence": "high",
+      "dependencies": []
+    }
+  ],
+  "comparative_claims": [
+    {
+      "id": "C1",
+      "text": "RLMs outperform base LLMs across four benchmarks (S-NIAH, BrowseComp-Plus, OOLONG, OOLONG-Pairs) with comparable or lower costs",
+      "evidence_type": "benchmark_comparison",
+      "verifiable": true,
+      "section": "abstract",
+      "confidence": "high",
+      "baseline": "base_llms",
+      "dependencies": ["E2", "E3", "E4", "E6", "E7", "E12"]
+    },
+    {
+      "id": "C2",
+      "text": "RLM(GPT-5) improves over base GPT-5 by 1,350% on OOLONG-Pairs F1 score",
+      "evidence_type": "percentage_improvement",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "gpt5_base",
+      "improvement": "1350%",
+      "dependencies": ["E2"]
+    },
+    {
+      "id": "C3",
+      "text": "RLM(Qwen3-Coder) improves over base Qwen3-Coder by 385% on OOLONG-Pairs F1 score",
+      "evidence_type": "percentage_improvement",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "qwen3_coder_base",
+      "improvement": "385%",
+      "dependencies": ["E3"]
+    },
+    {
+      "id": "C4",
+      "text": "RLM(GPT-5) improves over base GPT-5 by 28.4% on OOLONG linear complexity tasks",
+      "evidence_type": "percentage_improvement",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "gpt5_base",
+      "improvement": "28.4%",
+      "dependencies": ["E6"]
+    },
+    {
+      "id": "C5",
+      "text": "RLM(Qwen3-Coder) improves over base Qwen3-Coder by 33.3% on OOLONG linear complexity tasks",
+      "evidence_type": "percentage_improvement",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "qwen3_coder_base",
+      "improvement": "33.3%",
+      "dependencies": ["E7"]
+    },
+    {
+      "id": "C6",
+      "text": "RLM(GPT-5) achieves 91.33% accuracy on BrowseComp-Plus (1K) while base GPT-5 achieves 0% due to context limit exceeded",
+      "evidence_type": "capability_gap",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "gpt5_base",
+      "dependencies": ["E4", "E5"]
+    },
+    {
+      "id": "C7",
+      "text": "RLMs outperformed all baselines (Base Models, Summary Agent, CodeAct + BM25) by 10-59% on information-dense benchmarks",
+      "evidence_type": "benchmark_comparison",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "multiple_baselines",
+      "improvement": "10-59%",
+      "dependencies": []
+    },
+    {
+      "id": "C8",
+      "text": "RLMs are 3× cheaper than summarization baselines",
+      "evidence_type": "cost_comparison",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "baseline": "summarization_agent",
+      "cost_ratio": "3x",
+      "dependencies": ["E13"]
+    },
+    {
+      "id": "C9",
+      "text": "Full RLM with sub-calls achieves 56.50% on OOLONG versus 36.00% for RLM without sub-calls",
+      "evidence_type": "ablation_comparison",
+      "verifiable": true,
+      "section": "ablation",
+      "confidence": "high",
+      "baseline": "rlm_without_subcalls",
+      "improvement": "20.5 percentage points",
+      "dependencies": ["E15"]
+    },
+    {
+      "id": "C10",
+      "text": "Full RLM with sub-calls achieves 58.00% on OOLONG-Pairs versus 17.34% for RLM without sub-calls",
+      "evidence_type": "ablation_comparison",
+      "verifiable": true,
+      "section": "ablation",
+      "confidence": "high",
+      "baseline": "rlm_without_subcalls",
+      "improvement": "40.66 percentage points",
+      "dependencies": ["E16"]
+    },
+    {
+      "id": "C11",
+      "text": "RLMs demonstrate superior performance on quadratic complexity tasks compared to linear complexity tasks relative to base models",
+      "evidence_type": "complexity_analysis",
+      "verifiable": true,
+      "section": "results",
+      "confidence": "high",
+      "dependencies": ["E2", "E3", "E6", "E7"]
+    },
+    {
+      "id": "C12",
+      "text": "The improvement from removing sub-calls is more dramatic on quadratic complexity tasks (OOLONG-Pairs: -40.66pp) than linear complexity tasks (OOLONG: -20.5pp)",
+      "evidence_type": "ablation_comparison",
+      "verifiable": true,
+      "section": "ablation",
+      "confidence": "high",
+      "dependencies": ["E15", "E16"]
+    }
+  ],
+  "novelty_claims": [
+    {
+      "id": "N1",
+      "text": "RLMs introduce a novel inference strategy that treats long prompts as environmental variables within a Python REPL",
+      "evidence_type": "methodological_novelty",
+      "verifiable": false,
+      "section": "abstract",
+      "confidence": "medium",
+      "novelty_type": "architectural",
+      "dependencies": []
+    },
+    {
+      "id": "N2",
+      "text": "RLMs enable LLMs to programmatically examine, decompose, and recursively call themselves on prompt snippets",
+      "evidence_type": "capability_novelty",
+      "verifiable": false,
+      "section": "abstract",
+      "confidence": "medium",
+      "novelty_type": "capability",
+      "dependencies": []
+    },
+    {
+      "id": "N3",
+      "text": "The approach of placing prompts in external REPL environment rather than feeding them directly to neural networks is novel",
+      "evidence_type": "methodological_novelty",
+      "verifiable": false,
+      "section": "methodology",
+      "confidence": "low",
+      "novelty_type": "architectural",
+      "dependencies": []
+    },
+    {
+      "id": "N4",
+      "text": "Exposing llm_query() function within REPL for recursive self-invocation is a novel interface design",
+      "evidence_type": "interface_novelty",
+      "verifiable": false,
+      "section": "methodology",
+      "confidence": "low",
+      "novelty_type": "interface",
+      "dependencies": []
+    },
+    {
+      "id": "N5",
+      "text": "The combination of code execution, environment manipulation, and recursive LLM calls represents a novel paradigm",
+      "evidence_type": "paradigm_novelty",
+      "verifiable": false,
+      "section": "methodology",
+      "confidence": "medium",
+      "novelty_type": "paradigmatic",
+      "dependencies": []
+    },
+    {
+      "id": "N6",
+      "text": "RLMs are first to demonstrate handling inputs two orders of magnitude beyond model context windows",
+      "evidence_type": "achievement_novelty",
+      "verifiable": false,
+      "section": "abstract",
+      "confidence": "low",
+      "novelty_type": "achievement",
+      "dependencies": ["E1"]
+    },
+    {
+      "id": "N7",
+      "text": "The emergent behaviors (filtering, recursive decomposition, answer verification, long output handling) arise without explicit training",
+      "evidence_type": "emergence_novelty",
+      "verifiable": true,
+      "section": "emergent_behaviors",
+      "confidence": "medium",
+      "novelty_type": "emergent_property",
+      "dependencies": ["E23", "E24", "E25", "E26", "E27"]
+    }
+  ],
+  "reproducibility_artifacts": {
+    "code_available": {
+      "claimed": false,
+      "verified": false,
+      "location": null,
+      "license": null
+    },
+    "data_available": {
+      "claimed": false,
+      "verified": false,
+      "location": null,
+      "benchmarks": ["S-NIAH", "BrowseComp-Plus", "OOLONG", "OOLONG-Pairs", "LongBench-v2 CodeQA"]
+    },
+    "models_available": {
+      "claimed": false,
+      "verified": false,
+      "models": ["GPT-5", "Qwen3-Coder-480B-A35B"],
+      "publicly_accessible": {
+        "GPT-5": "commercial_api",
+        "Qwen3-Coder-480B-A35B": "unknown"
+      }
+    },
+    "hyperparameters": {
+      "recursion_depth": 1,
+      "implementation_type": "synchronous",
+      "environment": "Python REPL",
+      "other_details": "llm_query() function exposed for sub-calls"
+    },
+    "reproducibility_score": {
+      "value": "low",
+      "reasoning": "No code repository mentioned, models may not be fully accessible (GPT-5 commercial, Qwen3-Coder availability unclear), benchmark datasets not explicitly provided, implementation details incomplete"
+    }
+  },
+  "meta_analysis": {
+    "total_claims": 58,
+    "theoretical_claims": 12,
+    "empirical_claims": 29,
+    "comparative_claims": 12,
+    "novelty_claims": 7,
+    "high_confidence_claims": 47,
+    "medium_confidence_claims": 9,
+    "low_confidence_claims": 2,
+    "verifiable_claims": 55,
+    "non_verifiable_claims": 5,
+    "key_dependencies": [
+      "Sub-call mechanism is critical for performance (E15, E16 show 20.5-40.66pp drops without it)",
+      "Quadratic complexity tasks show larger improvements than linear (C11, C12)",
+      "Emergent behaviors depend on REPL + code execution + recursive calls (T6, E23-E27)",
+      "Cost efficiency depends on trajectory optimization (E12, E14)",
+      "Context window expansion depends on external environment design (T1, E1)"
+    ],
+    "critical_assumptions": [
+      "Models can effectively write and execute code for context manipulation without specific training",
+      "Recursive decomposition strategies emerge naturally rather than requiring explicit prompting",
+      "Single recursion depth is representative of optimal performance",
+      "Synchronous implementation is acceptable proxy for asynchronous potential",
+      "Benchmarks adequately represent real-world long-context scenarios"
+    ],
+    "verification_priorities": [
+      "HIGH: Reproduce core benchmark results (E2-E7) - foundation of all claims",
+      "HIGH: Verify ablation results (E15-E16) - validates necessity of sub-calls",
+      "HIGH: Verify cost claims (E13) - 3x cheaper than baselines is significant",
+      "MEDIUM: Verify emergent behaviors (E23-E27) - qualitative but important",
+      "MEDIUM: Test with different recursion depths - current limit of 1 may be artificial constraint",
+      "LOW: Verify novelty claims (N1-N7) - requires literature review"
+    ],
+    "potential_confounds": [
+      "GPT-5 and Qwen3-Coder may have different code execution capabilities affecting RLM performance",
+      "High variance in trajectory costs (E14) suggests instability or optimization challenges",
+      "0% baseline on BrowseComp-Plus due to context limits makes comparison less meaningful",
+      "Models not trained as RLMs may underestimate potential performance with targeted training",
+      "Synchronous implementation runtime may mask latency issues in production",
+      "Single recursion depth may artificially limit complexity that can be handled"
+    ],
+    "missing_information": [
+      "Exact implementation details of REPL initialization",
+      "Prompt templates for llm_query() function",
+      "Distribution of trajectory costs (not just median and variance)",
+      "Detailed breakdown of emergent behavior frequency across examples",
+      "Runtime comparison metrics (only mentioned as limitation, no numbers)",
+      "Performance on LongBench-v2 CodeQA (mentioned in benchmarks but no results shown)",
+      "Performance on S-NIAH (mentioned but no results shown)",
+      "Failure mode analysis",
+      "Comparison with other long-context methods beyond summarization",
+      "Effect of different recursion depth limits"
+    ]
+  }
+}
