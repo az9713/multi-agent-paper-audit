@@ -331,13 +331,13 @@ Then type:
 /help
 ```
 
-You should see `/audit-paper` listed as an available skill.
+You should see `Audit this paper:` listed as an available skill.
 
 ### Check 3: Run a test audit
 
 Inside Claude Code, type:
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 Wait for it to complete (3-5 minutes). If you see "Audit complete!" at the end, everything is working!

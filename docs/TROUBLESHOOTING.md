@@ -138,7 +138,7 @@ npm install -g @anthropic-ai/claude-code
 
 ## Starting the Tool
 
-### Problem: "No skills found" or "/audit-paper not recognized"
+### Problem: "No skills found" or "Audit this paper: not recognized"
 
 **What it means:** Claude Code can't find the skill files.
 
@@ -213,9 +213,9 @@ npm install -g @anthropic-ai/claude-code
 
 2. **Try different input formats:**
    ```
-   /audit-paper 2512.24601
-   /audit-paper arXiv:2512.24601
-   /audit-paper https://arxiv.org/abs/2512.24601
+   Audit this paper: 2512.24601
+   Audit this paper: arXiv:2512.24601
+   Audit this paper: https://arxiv.org/abs/2512.24601
    ```
 
 3. **Check if arXiv is accessible:**
@@ -314,7 +314,7 @@ npm install -g @anthropic-ai/claude-code
 
 1. **Re-run the audit:**
    ```
-   /audit-paper 2512.24601
+   Audit this paper: 2512.24601
    ```
 
 2. **Check for errors** during the previous run

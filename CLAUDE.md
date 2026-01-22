@@ -4,7 +4,7 @@ This file tells Claude Code how to work with this repository.
 
 ## Project Overview
 
-This is a **multi-agent paper auditing pipeline** that uses 5 specialized AI agents to rigorously review scientific papers from arXiv. The main entry point is the `/audit-paper` skill.
+This is a **multi-agent paper auditing pipeline** that uses 5 specialized AI agents to rigorously review scientific papers from arXiv. The main entry point is the `paper-audit` skill.
 
 ## Repository Structure
 
@@ -26,14 +26,15 @@ docs/                         # Documentation
 ## Key Commands
 
 ### Primary Command
+Ask Claude to audit a paper:
 ```
-/audit-paper <arXiv-URL-or-ID>
+Audit this paper: <arXiv-URL-or-ID>
 ```
 
 Examples:
-- `/audit-paper https://arxiv.org/pdf/2512.24601`
-- `/audit-paper arXiv:2512.24601`
-- `/audit-paper 2512.24601`
+- `Audit this paper: https://arxiv.org/pdf/2512.24601`
+- `Audit this paper: arXiv:2512.24601`
+- `Audit paper 2512.24601`
 
 ### What It Does
 1. Fetches the paper from arXiv
@@ -104,7 +105,7 @@ output/{paper_id}/
 To test changes:
 ```bash
 claude
-> /audit-paper 2512.24601
+> Audit this paper: 2512.24601
 ```
 
 Check that:

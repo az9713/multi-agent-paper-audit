@@ -43,14 +43,14 @@ claude>
 Type this command:
 
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 ### Step 3: Wait for Results
 
 You'll see progress updates:
 ```
-[/audit-paper] Starting audit of 2512.24601...
+[Audit this paper:] Starting audit of 2512.24601...
 
 [Phase 1] Fetching paper...
   ✓ Paper downloaded: "Recursive Language Models"
@@ -97,7 +97,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `deconstruction.json` - it lists every claim the paper makes, organized by type:
@@ -116,7 +116,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `math_audit.md` and look for:
@@ -134,7 +134,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `adversarial_review.md` - it contains 15-20 tough questions organized by:
@@ -152,7 +152,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `contradicting_papers.md` - it lists:
@@ -170,7 +170,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `verification/results.json` - it shows:
@@ -188,7 +188,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `FULL_RESEARCH_PROPOSAL.md` - it contains:
@@ -207,7 +207,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `literature_gaps.md` - it lists:
@@ -225,7 +225,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `decision_memo.md` and check:
@@ -243,7 +243,7 @@ These examples will help you understand what the tool can do. Try them in order 
 
 **How:**
 ```
-/audit-paper 2512.24601
+Audit this paper: 2512.24601
 ```
 
 **What to look at:** Open `exploration_notebook.ipynb` in Jupyter:
@@ -261,9 +261,9 @@ jupyter notebook output/2512.24601/exploration_notebook.ipynb
 
 **How:**
 ```
-/audit-paper 2512.24601
-/audit-paper 2310.08560
-/audit-paper 2307.03172
+Audit this paper: 2512.24601
+Audit this paper: 2310.08560
+Audit this paper: 2307.03172
 ```
 
 **What to look at:** Compare the `decision_memo.md` files from each:

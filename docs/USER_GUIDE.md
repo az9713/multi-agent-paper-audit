@@ -89,24 +89,24 @@ Now you're ready to audit papers!
 ### Basic Command
 
 ```
-/audit-paper <paper-identifier>
+Audit this paper: <paper-identifier>
 ```
 
 ### Ways to Specify a Paper
 
 | Format | Example |
 |--------|---------|
-| Full PDF URL | `/audit-paper https://arxiv.org/pdf/2512.24601.pdf` |
-| Abstract URL | `/audit-paper https://arxiv.org/abs/2512.24601` |
-| arXiv ID with prefix | `/audit-paper arXiv:2512.24601` |
-| Just the ID | `/audit-paper 2512.24601` |
+| Full PDF URL | `Audit this paper: https://arxiv.org/pdf/2512.24601.pdf` |
+| Abstract URL | `Audit this paper: https://arxiv.org/abs/2512.24601` |
+| arXiv ID with prefix | `Audit this paper: arXiv:2512.24601` |
+| Just the ID | `Audit this paper: 2512.24601` |
 
 ### What Happens During an Audit
 
 When you run an audit, you'll see progress updates:
 
 ```
-[/audit-paper] Starting audit of 2512.24601...
+[Audit this paper:] Starting audit of 2512.24601...
 
 [Phase 1] Fetching paper...
   ✓ Paper downloaded: "Recursive Language Models"
@@ -508,9 +508,9 @@ The verification code is designed to be modified:
 You can audit several papers in one session:
 
 ```
-/audit-paper 2512.24601
-/audit-paper 2310.08560
-/audit-paper 2307.03172
+Audit this paper: 2512.24601
+Audit this paper: 2310.08560
+Audit this paper: 2307.03172
 ```
 
 Each creates its own folder in `output/`.

@@ -98,7 +98,7 @@ Instructions go here...
 
 ### How Claude Code Finds Skills
 
-When you type `/audit-paper`, Claude Code:
+When you type `Audit this paper:`, Claude Code:
 
 1. Looks in `.claude/skills/` for matching skill
 2. Finds `paper-audit/SKILL.md` (main entry point)
@@ -271,7 +271,7 @@ Save the file and run an audit to test:
 
 ```bash
 claude
-> /audit-paper 2512.24601
+> Audit this paper: 2512.24601
 ```
 
 ### Example Modifications
@@ -436,7 +436,7 @@ After any change, run a full audit:
 
 ```bash
 claude
-> /audit-paper 2512.24601
+> Audit this paper: 2512.24601
 ```
 
 Check:

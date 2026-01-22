@@ -17,7 +17,7 @@ When you give it an arXiv paper, it:
 ```bash
 # Audit a paper from arXiv
 claude
-> /audit-paper https://arxiv.org/pdf/2512.24601
+> Audit this paper: https://arxiv.org/pdf/2512.24601
 ```
 
 **Output:** A complete audit with decision memo, adversarial review, and research directions.
@@ -72,7 +72,7 @@ output/2512.24601/
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    You: /audit-paper                         │
+│                 You: "Audit this paper"                      │
 └──────────────────────────┬──────────────────────────────────┘
                            ▼
 ┌─────────────────────────────────────────────────────────────┐

@@ -3,7 +3,7 @@ name: audit-paper
 description: Rigorously audit scientific papers from arXiv or PDF. Runs 5-agent pipeline with adversarial review, mathematical verification, and code execution. Use when asked to review, audit, or analyze an academic paper.
 ---
 
-# /audit-paper - Paper Auditing Pipeline
+# Paper Auditing Pipeline
 
 ## Overview
 
@@ -13,7 +13,7 @@ You are orchestrating a rigorous 5-agent pipeline to audit a scientific/technica
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    /audit-paper                              │
+│                 "Audit this paper"                           │
 │              (YOU - Main Orchestrator)                       │
 └──────────────────────────┬──────────────────────────────────┘
                            ▼
@@ -253,7 +253,7 @@ Display the final summary to the user and **direct them to README.md**:
 As orchestrator, report progress at each phase:
 
 ```
-[/audit-paper] Starting audit of {paper_id}...
+[paper-audit] Starting audit of {paper_id}...
 
 [Phase 1] Fetching paper...
   ✓ Paper downloaded: {title}
@@ -368,4 +368,4 @@ Final:
 ## Example Invocation
 
 ```
-User: /audit-paper arXiv:2512.15605
+User: Audit this paper: arXiv:2512.15605
